@@ -215,4 +215,120 @@
             const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
             
             // 生成身份证号
-            const area = areaCode[Math.floor(Math.random() * a
+            const area = areaCode[Math.floor(Math.random() * areaCode.length)];
+            const birth = `${year}${month}${day}`;
+            const sequence = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            const genderNum = gender === 'male' ? 
+                String(Math.floor(Math.random() * 5) * 2 + 1) : 
+                String(Math.floor(Math.random() * 5) * 2);
+            
+            let idcard = `${area}${birth}${sequence}${genderNum}`;
+            
+            // 计算校验码
+            const weights = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
+            const checkCodes = ['1','0','X','9','8','7','6','5','4','3','2'];
+            let sum = 0;
+            for(let i = 0; i < 17; i++) {
+                sum += parseInt(idcard[i]) * weights[i];
+            }
+            const checkCode = checkCodes[sum % 11];
+            
+            idcard += checkCode;
+            document.getElementById('idcard').value = idcard;
+        }
+
+        // 用户名生成函数
+        function generateUsername() {
+            const type = document.querySelector('input[name="usernameType"]:checked').value;
+            let username = '';
+            
+            if (type === 'cn') {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                username = firstName + lastName;
+            } else {
+                const name = engNames[Math.floor(Math.random() * engNames.length)];
+                const suffix = engSuffix[Math.floor(Math.random() * engSuffix.length)];
+                username = name + suffix;
+            }
+            
+            document.getElementById('username').value = username;
+        }
+
+        // 密码生成函数
+        function generatePassword() {
+            const length = parseInt(document.getElementById('length').value);
+            const hasUpper = document.getElementById('uppercase').checked;
+            const hasLower = document.getElementById('lowercase').checked;
+            const hasNumbers = document.getElementById('numbers').checked;
+            const hasSymbols = document.getElementById('symbols').checked;
+
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let chars = '';
+            if (hasUpper) chars += upper;
+            if (hasLower) chars += lower;
+            if (hasNumbers) chars += numbers;
+            if (hasSymbols) chars += symbols;
+
+            if (!chars) {
+                alert('请至少选择一种字符类型！');
+                return;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                password += chars[randomIndex];
+            }
+
+            document.getElementById('password').value = password;
+        }
+
+        // 复制函数
+        function copyIdcard() {
+            const input = document.getElementById('idcard');
+            input.select();
+            document.execCommand('copy');
+            
+            const button = document.getElementById('copyIdcard');
+            button.textContent = '已复制';
+            setTimeout(() => {
+                button.textContent = '复制';
+            }, 1000);
+        }
+
+        function copyUsername() {
+            const input = document.getElementById('username');
+            input.select();
+            document.execCommand('copy');
+            
+            const button = document.getElementById('copyUsername');
+            button.textContent = '已复制';
+            setTimeout(() => {
+                button.textContent = '复制';
+            }, 1000);
+        }
+
+        function copyPassword() {
+            const input = document.getElementById('password');
+            input.select();
+            document.execCommand('copy');
+            
+            const button = document.getElementById('copy');
+            button.textContent = '已复制';
+            setTimeout(() => {
+                button.textContent = '复制';
+            }, 1000);
+        }
+
+        // 页面加载时自动生成所有内容
+        generateIdcard();
+        generateUsername();
+        generatePassword();
+    </script>
+</body>
+</html>
