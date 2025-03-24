@@ -17,6 +17,9 @@
             background-color: #f2f2f7;
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
@@ -24,7 +27,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin: 0 auto;
+            width: 90%;
             max-width: 500px;
         }
 
@@ -41,7 +44,7 @@
             gap: 10px;
         }
 
-        #password {
+        input[type="text"] {
             flex: 1;
             padding: 12px;
             font-size: 16px;
@@ -65,15 +68,19 @@
             background-color: #0051a8;
         }
 
+        .settings {
+            margin-bottom: 15px;
+        }
+
         .setting {
             margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
 
-        input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
+        input[type="checkbox"], input[type="radio"] {
+            width: 20px;
+            height: 20px;
             margin-right: 10px;
         }
 
@@ -90,14 +97,33 @@
             font-size: 16px;
             display: flex;
             align-items: center;
+            margin-right: 15px;
+        }
+
+        .full-width-button {
+            width: 100%;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>密码生成器</h1>
+        
         <div class="password-box">
-            <input type="text" id="password" readonly>
+            <input type="text" id="username" readonly placeholder="随机用户名">
+            <button id="copyUsername">复制</button>
+        </div>
+        <div class="settings">
+            <div class="setting">
+                <label><input type="radio" name="usernameType" value="cn" checked> 中文名</label>
+                <label><input type="radio" name="usernameType" value="en"> 英文名</label>
+            </div>
+        </div>
+        <button id="generateUsername" class="full-width-button">生成用户名</button>
+
+        <div class="password-box">
+            <input type="text" id="password" readonly placeholder="随机密码">
             <button id="copy">复制</button>
         </div>
         <div class="settings">
@@ -117,18 +143,19 @@
                 <label><input type="checkbox" id="symbols" checked>特殊符号</label>
             </div>
         </div>
-        <button id="generate" style="width: 100%;">生成密码</button>
+        <button id="generate" class="full-width-button">生成密码</button>
     </div>
 
     <script>
-        // 生成密码的代码保持不变...
-    </script>
-</body>
-</html>
-    <!-- HTML部分保持不变 -->
-    <script>
+        const firstNames = ['张', '王', '李', '赵', '刘', '陈', '杨', '黄', '周', '吴', '郑', '马', '朱', '胡', '林'];
+        const lastNames = ['伟', '芳', '娜', '秀英', '敏', '静', '丽', '强', '磊', '洋', '艳', '勇', '军', '杰', '涛'];
+        const engNames = ['cool', 'happy', 'super', 'funny', 'clever', 'smart', 'nice', 'good', 'best', 'lucky', 'sweet', 'bright', 'sunny', 'moon', 'star'];
+        const engSuffix = ['123', '888', '666', '999', '777', '555', '333', '222', '111', '000', '_pro', '_vip', '_ace', '_top', '_max'];
+
         document.getElementById('generate').addEventListener('click', generatePassword);
         document.getElementById('copy').addEventListener('click', copyPassword);
+        document.getElementById('generateUsername').addEventListener('click', generateUsername);
+        document.getElementById('copyUsername').addEventListener('click', copyUsername);
 
         function generatePassword() {
             const length = parseInt(document.getElementById('length').value);
@@ -162,6 +189,23 @@
             document.getElementById('password').value = password;
         }
 
+        function generateUsername() {
+            const type = document.querySelector('input[name="usernameType"]:checked').value;
+            let username = '';
+            
+            if (type === 'cn') {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                username = firstName + lastName;
+            } else {
+                const name = engNames[Math.floor(Math.random() * engNames.length)];
+                const suffix = engSuffix[Math.floor(Math.random() * engSuffix.length)];
+                username = name + suffix;
+            }
+            
+            document.getElementById('username').value = username;
+        }
+
         function copyPassword() {
             const passwordInput = document.getElementById('password');
             passwordInput.select();
@@ -174,6 +218,21 @@
             }, 1000);
         }
 
-        // 页面加载时自动生成一个密码
+        function copyUsername() {
+            const usernameInput = document.getElementById('username');
+            usernameInput.select();
+            document.execCommand('copy');
+            
+            const copyButton = document.getElementById('copyUsername');
+            copyButton.textContent = '已复制';
+            setTimeout(() => {
+                copyButton.textContent = '复制';
+            }, 1000);
+        }
+
+        // 页面加载时自动生成用户名和密码
+        generateUsername();
         generatePassword();
     </script>
+</body>
+</html>
