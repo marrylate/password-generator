@@ -119,6 +119,16 @@
             color: #1c1c1e;
             font-weight: 500;
         }
+
+        .id-info {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .id-info input {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -127,9 +137,10 @@
         
         <!-- 身份证信息生成部分 -->
         <div class="section-title">身份证信息</div>
-        <div class="password-box">
+        <div class="id-info">
+            <input type="text" id="idName" readonly placeholder="姓名">
             <input type="text" id="idcard" readonly placeholder="身份证号码">
-            <button id="copyIdcard">复制</button>
+            <button id="copyIdInfo">复制</button>
         </div>
         <div class="settings">
             <div class="setting">
@@ -186,9 +197,13 @@
         // 身份证号码生成相关数据
         const areaCode = ['110101', '310101', '440101', '440300', '510101', '330101', '320100', '420100', '500100', '610100'];
         
-        // 用户名生成相关数据
+        // 姓名生成相关数据
         const firstNames = ['张', '王', '李', '赵', '刘', '陈', '杨', '黄', '周', '吴', '郑', '马', '朱', '胡', '林'];
         const lastNames = ['伟', '芳', '娜', '秀英', '敏', '静', '丽', '强', '磊', '洋', '艳', '勇', '军', '杰', '涛'];
+        const femaleNames = ['芳', '娜', '秀英', '敏', '静', '丽', '燕', '玲', '华', '雪', '萍', '红', '玉', '梅', '琳'];
+        const maleNames = ['伟', '强', '磊', '洋', '勇', '军', '杰', '涛', '超', '明', '刚', '建', '峰', '华', '龙'];
+        
+        // 用户名生成相关数据
         const engNames = ['cool', 'happy', 'super', 'funny', 'clever', 'smart', 'nice', 'good', 'best', 'lucky'];
         const engSuffix = ['123', '888', '666', '999', '777', '555', '333', '222', '111', '000'];
 
@@ -198,13 +213,21 @@
         document.getElementById('generateUsername').addEventListener('click', generateUsername);
         document.getElementById('copyUsername').addEventListener('click', copyUsername);
         document.getElementById('generateIdcard').addEventListener('click', generateIdcard);
-        document.getElementById('copyIdcard').addEventListener('click', copyIdcard);
+        document.getElementById('copyIdInfo').addEventListener('click', copyIdInfo);
 
-        // 身份证号码生成函数
+        // 身份证信息生成函数
         function generateIdcard() {
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const minAge = parseInt(document.getElementById('minAge').value);
             const maxAge = parseInt(document.getElementById('maxAge').value);
+            
+            // 生成姓名
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const lastName = gender === 'male' ? 
+                maleNames[Math.floor(Math.random() * maleNames.length)] :
+                femaleNames[Math.floor(Math.random() * femaleNames.length)];
+            const fullName = firstName + lastName;
+            document.getElementById('idName').value = fullName;
             
             // 生成出生日期
             const now = new Date();
@@ -289,12 +312,20 @@
         }
 
         // 复制函数
-        function copyIdcard() {
-            const input = document.getElementById('idcard');
-            input.select();
-            document.execCommand('copy');
+        function copyIdInfo() {
+            const name = document.getElementById('idName').value;
+            const idcard = document.getElementById('idcard').value;
+            const text = `姓名：${name}\n身份证号：${idcard}`;
             
-            const button = document.getElementById('copyIdcard');
+            // 创建临时文本区域
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            const button = document.getElementById('copyIdInfo');
             button.textContent = '已复制';
             setTimeout(() => {
                 button.textContent = '复制';
