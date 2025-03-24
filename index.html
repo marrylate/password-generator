@@ -45,7 +45,9 @@
             border-radius: 8px;
             min-height: 44px;
             min-width: 60px;
+            cursor: pointer;
         }
+        button:active {background: #0051a8;}
         .settings {
             border: 1px solid #ddd;
             padding: 12px;
@@ -126,6 +128,11 @@
             </div>
             <button onclick="generatePassword()" style="width:100%">生成密码</button>
         </div>
+
+        <div class="section">
+            <div class="section-title">临时邮箱</div>
+            <button onclick="window.open('https://www.emailnator.com/', '_blank')" style="width:100%">打开临时邮箱网站</button>
+        </div>
     </div>
 
     <script>
@@ -147,8 +154,7 @@
             const minAge = parseInt(document.getElementById('minAge').value);
             const maxAge = parseInt(document.getElementById('maxAge').value);
             
-            const name = data.cnFirst[Math.floor(Math.random() * data.cnFirst.length)] + 
-                        (gender === 'male' ? random(data.cnMale) : random(data.cnFemale));
+            const name = random(data.cnFirst) + (gender === 'male' ? random(data.cnMale) : random(data.cnFemale));
             document.getElementById('idName').value = name;
             
             const now = new Date();
@@ -158,7 +164,9 @@
             
             const area = random(data.area);
             const sequence = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-            const genderNum = gender === 'male' ? String(Math.floor(Math.random() * 5) * 2 + 1) : String(Math.floor(Math.random() * 5) * 2);
+            const genderNum = gender === 'male' ? 
+                String(Math.floor(Math.random() * 5) * 2 + 1) : 
+                String(Math.floor(Math.random() * 5) * 2);
             
             let id = `${area}${year}${month}${day}${sequence}${genderNum}`;
             const weights = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
