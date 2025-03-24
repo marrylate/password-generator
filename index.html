@@ -2,173 +2,70 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>信息生成器</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * {margin: 0; padding: 0; box-sizing: border-box;}
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f2f2f7;
-            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f2f2f7;
             padding: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            min-height: 100vh;
         }
-
         .container {
-            background-color: white;
+            background: white;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            width: 100%;
             max-width: 500px;
-            margin-top: 10px;
+            margin: 0 auto;
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #000;
-            font-size: 20px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            margin: 15px 0 10px;
-            color: #1c1c1e;
-            font-weight: 500;
-        }
-
-        .password-box {
-            margin-bottom: 15px;
+        h1 {text-align: center; margin-bottom: 15px; font-size: 20px;}
+        .section {margin: 15px 0;}
+        .section-title {font-size: 16px; margin-bottom: 10px;}
+        .input-group {
             display: flex;
             gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
-
         input[type="text"] {
             flex: 1;
+            min-width: 120px;
             padding: 10px;
-            font-size: 15px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            background: #fff;
             min-height: 44px;
         }
-
         button {
-            background-color: #007aff;
+            background: #007aff;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 8px;
-            font-size: 15px;
-            font-weight: 500;
             min-height: 44px;
             min-width: 60px;
-            cursor: pointer;
         }
-
-        button:active {
-            background-color: #0051a8;
-        }
-
         .settings {
-            margin-bottom: 15px;
+            border: 1px solid #ddd;
             padding: 12px;
-            border: 1px solid #e5e5ea;
             border-radius: 8px;
+            margin-bottom: 15px;
         }
-
-        .setting {
-            margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .setting:last-child {
-            margin-bottom: 0;
-        }
-
-        input[type="checkbox"], input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            margin: 0;
-            vertical-align: middle;
-        }
-
+        .setting {margin-bottom: 10px;}
+        .setting:last-child {margin-bottom: 0;}
+        label {display: inline-flex; align-items: center; gap: 6px; min-height: 44px;}
+        input[type="checkbox"], input[type="radio"] {width: 20px; height: 20px;}
         input[type="number"] {
             width: 60px;
             padding: 8px;
-            font-size: 15px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            margin: 0 4px;
         }
-
-        label {
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-right: 12px;
-            min-height: 44px;
-            padding: 0 4px;
-        }
-
-        .full-width-button {
-            width: 100%;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        .id-info {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .id-info input {
-            flex: 1;
-        }
-
         @media (max-width: 380px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 12px;
-            }
-
-            input[type="text"], button {
-                font-size: 14px;
-            }
-
-            .setting {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            label {
-                font-size: 14px;
-            }
-
-            .id-info {
-                flex-direction: column;
-            }
-
-            .id-info button {
-                align-self: stretch;
-            }
+            body {padding: 10px;}
+            .input-group {flex-direction: column;}
+            button {width: 100%;}
         }
     </style>
 </head>
@@ -176,228 +73,141 @@
     <div class="container">
         <h1>信息生成器</h1>
         
-        <!-- 身份证信息生成部分 -->
-        <div class="section-title">身份证信息</div>
-        <div class="id-info">
-            <input type="text" id="idName" readonly placeholder="姓名">
-            <input type="text" id="idcard" readonly placeholder="身份证号码">
-            <button id="copyIdInfo">复制</button>
-        </div>
-        <div class="settings">
-            <div class="setting">
-                <label>性别：</label>
-                <label><input type="radio" name="gender" value="male" checked> 男</label>
-                <label><input type="radio" name="gender" value="female"> 女</label>
+        <div class="section">
+            <div class="section-title">身份证信息</div>
+            <div class="input-group">
+                <input type="text" id="idName" readonly placeholder="姓名">
+                <input type="text" id="idcard" readonly placeholder="身份证号码">
+                <button onclick="copyText(['idName', 'idcard'])">复制</button>
             </div>
-            <div class="setting">
-                <label>年龄范围：
-                    <input type="number" id="minAge" value="18" min="1" max="100"> -
-                    <input type="number" id="maxAge" value="60" min="1" max="100">
-                </label>
+            <div class="settings">
+                <div class="setting">
+                    <label><input type="radio" name="gender" value="male" checked> 男</label>
+                    <label><input type="radio" name="gender" value="female"> 女</label>
+                </div>
+                <div class="setting">
+                    <label>年龄：<input type="number" id="minAge" value="18" min="1" max="100">-<input type="number" id="maxAge" value="60" min="1" max="100"></label>
+                </div>
             </div>
+            <button onclick="generateIdcard()" style="width:100%">生成身份证信息</button>
         </div>
-        <button id="generateIdcard" class="full-width-button">生成身份证信息</button>
 
-        <!-- 用户名生成部分 -->
-        <div class="section-title">用户名</div>
-        <div class="password-box">
-            <input type="text" id="username" readonly placeholder="随机用户名">
-            <button id="copyUsername">复制</button>
-        </div>
-        <div class="settings">
-            <div class="setting">
-                <label><input type="radio" name="usernameType" value="cn" checked> 中文名</label>
-                <label><input type="radio" name="usernameType" value="en"> 英文名</label>
+        <div class="section">
+            <div class="section-title">用户名</div>
+            <div class="input-group">
+                <input type="text" id="username" readonly placeholder="随机用户名">
+                <button onclick="copyText(['username'])">复制</button>
             </div>
+            <div class="settings">
+                <div class="setting">
+                    <label><input type="radio" name="usernameType" value="cn" checked> 中文名</label>
+                    <label><input type="radio" name="usernameType" value="en"> 英文名</label>
+                </div>
+            </div>
+            <button onclick="generateUsername()" style="width:100%">生成用户名</button>
         </div>
-        <button id="generateUsername" class="full-width-button">生成用户名</button>
 
-        <!-- 密码生成部分 -->
-        <div class="section-title">密码</div>
-        <div class="password-box">
-            <input type="text" id="password" readonly placeholder="随机密码">
-            <button id="copy">复制</button>
+        <div class="section">
+            <div class="section-title">密码</div>
+            <div class="input-group">
+                <input type="text" id="password" readonly placeholder="随机密码">
+                <button onclick="copyText(['password'])">复制</button>
+            </div>
+            <div class="settings">
+                <div class="setting">
+                    <label>长度：<input type="number" id="length" min="4" max="50" value="12"></label>
+                </div>
+                <div class="setting">
+                    <label><input type="checkbox" id="uppercase" checked>大写</label>
+                    <label><input type="checkbox" id="lowercase" checked>小写</label>
+                    <label><input type="checkbox" id="numbers" checked>数字</label>
+                    <label><input type="checkbox" id="symbols" checked>符号</label>
+                </div>
+            </div>
+            <button onclick="generatePassword()" style="width:100%">生成密码</button>
         </div>
-        <div class="settings">
-            <div class="setting">
-                <label>密码长度<input type="number" id="length" min="4" max="50" value="12"></label>
-            </div>
-            <div class="setting">
-                <label><input type="checkbox" id="uppercase" checked>大写字母</label>
-                <label><input type="checkbox" id="lowercase" checked>小写字母</label>
-            </div>
-            <div class="setting">
-                <label><input type="checkbox" id="numbers" checked>数字</label>
-                <label><input type="checkbox" id="symbols" checked>特殊符号</label>
-            </div>
-        </div>
-        <button id="generate" class="full-width-button">生成密码</button>
     </div>
 
     <script>
-        // 身份证号码生成相关数据
-        const areaCode = ['110101', '310101', '440101', '440300', '510101', '330101', '320100', '420100', '500100', '610100'];
-        
-        // 姓名生成相关数据
-        const firstNames = ['张', '王', '李', '赵', '刘', '陈', '杨', '黄', '周', '吴', '郑', '马', '朱', '胡', '林'];
-        const lastNames = ['伟', '芳', '娜', '秀英', '敏', '静', '丽', '强', '磊', '洋', '艳', '勇', '军', '杰', '涛'];
-        const femaleNames = ['芳', '娜', '秀英', '敏', '静', '丽', '燕', '玲', '华', '雪', '萍', '红', '玉', '梅', '琳'];
-        const maleNames = ['伟', '强', '磊', '洋', '勇', '军', '杰', '涛', '超', '明', '刚', '建', '峰', '华', '龙'];
-        
-        // 用户名生成相关数据
-        const engNames = ['cool', 'happy', 'super', 'funny', 'clever', 'smart', 'nice', 'good', 'best', 'lucky'];
-        const engSuffix = ['123', '888', '666', '999', '777', '555', '333', '222', '111', '000'];
+        const data = {
+            area: ['110101', '310101', '440101', '440300', '510101', '330101', '320100', '420100', '500100', '610100'],
+            cnFirst: ['张', '王', '李', '赵', '刘', '陈', '杨', '黄', '周', '吴'],
+            cnMale: ['伟', '强', '磊', '洋', '勇', '军', '杰', '涛', '超', '明'],
+            cnFemale: ['芳', '娜', '秀英', '敏', '静', '丽', '燕', '玲', '华', '雪'],
+            enFirst: ['James', 'John', 'Robert', 'Michael', 'William', 'Mary', 'Emma', 'Elizabeth', 'Sarah', 'Margaret'],
+            enLast: ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez']
+        };
 
-        // 添加事件监听器
-        document.getElementById('generate').addEventListener('click', generatePassword);
-        document.getElementById('copy').addEventListener('click', copyPassword);
-        document.getElementById('generateUsername').addEventListener('click', generateUsername);
-        document.getElementById('copyUsername').addEventListener('click', copyUsername);
-        document.getElementById('generateIdcard').addEventListener('click', generateIdcard);
-        document.getElementById('copyIdInfo').addEventListener('click', copyIdInfo);
+        function random(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
 
-        // 身份证信息生成函数
         function generateIdcard() {
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const minAge = parseInt(document.getElementById('minAge').value);
             const maxAge = parseInt(document.getElementById('maxAge').value);
             
-            // 生成姓名
-            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const lastName = gender === 'male' ? 
-                maleNames[Math.floor(Math.random() * maleNames.length)] :
-                femaleNames[Math.floor(Math.random() * femaleNames.length)];
-            const fullName = firstName + lastName;
-            document.getElementById('idName').value = fullName;
+            const name = data.cnFirst[Math.floor(Math.random() * data.cnFirst.length)] + 
+                        (gender === 'male' ? random(data.cnMale) : random(data.cnFemale));
+            document.getElementById('idName').value = name;
             
-            // 生成出生日期
             const now = new Date();
-            const minYear = now.getFullYear() - maxAge;
-            const maxYear = now.getFullYear() - minAge;
-            const year = Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear;
+            const year = now.getFullYear() - minAge - Math.floor(Math.random() * (maxAge - minAge + 1));
             const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
             const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
             
-            // 生成身份证号
-            const area = areaCode[Math.floor(Math.random() * areaCode.length)];
-            const birth = `${year}${month}${day}`;
+            const area = random(data.area);
             const sequence = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-            const genderNum = gender === 'male' ? 
-                String(Math.floor(Math.random() * 5) * 2 + 1) : 
-                String(Math.floor(Math.random() * 5) * 2);
+            const genderNum = gender === 'male' ? String(Math.floor(Math.random() * 5) * 2 + 1) : String(Math.floor(Math.random() * 5) * 2);
             
-            let idcard = `${area}${birth}${sequence}${genderNum}`;
-            
-            // 计算校验码
+            let id = `${area}${year}${month}${day}${sequence}${genderNum}`;
             const weights = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
-            const checkCodes = ['1','0','X','9','8','7','6','5','4','3','2'];
-            let sum = 0;
-            for(let i = 0; i < 17; i++) {
-                sum += parseInt(idcard[i]) * weights[i];
-            }
-            const checkCode = checkCodes[sum % 11];
+            const codes = ['1','0','X','9','8','7','6','5','4','3','2'];
+            const sum = [...id].reduce((s, v, i) => s + parseInt(v) * weights[i], 0);
+            id += codes[sum % 11];
             
-            idcard += checkCode;
-            document.getElementById('idcard').value = idcard;
+            document.getElementById('idcard').value = id;
         }
 
-        // 用户名生成函数
         function generateUsername() {
             const type = document.querySelector('input[name="usernameType"]:checked').value;
-            let username = '';
-            
-            if (type === 'cn') {
-                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-                username = firstName + lastName;
-            } else {
-                const name = engNames[Math.floor(Math.random() * engNames.length)];
-                const suffix = engSuffix[Math.floor(Math.random() * engSuffix.length)];
-                username = name + suffix;
-            }
-            
+            const username = type === 'cn' ? 
+                random(data.cnFirst) + random(data.cnMale.concat(data.cnFemale)) :
+                random(data.enFirst) + ' ' + random(data.enLast);
             document.getElementById('username').value = username;
         }
 
-        // 密码生成函数
         function generatePassword() {
             const length = parseInt(document.getElementById('length').value);
-            const hasUpper = document.getElementById('uppercase').checked;
-            const hasLower = document.getElementById('lowercase').checked;
-            const hasNumbers = document.getElementById('numbers').checked;
-            const hasSymbols = document.getElementById('symbols').checked;
-
-            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const lower = 'abcdefghijklmnopqrstuvwxyz';
-            const numbers = '0123456789';
-            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-
-            let chars = '';
-            if (hasUpper) chars += upper;
-            if (hasLower) chars += lower;
-            if (hasNumbers) chars += numbers;
-            if (hasSymbols) chars += symbols;
-
-            if (!chars) {
-                alert('请至少选择一种字符类型！');
-                return;
-            }
-
-            let password = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * chars.length);
-                password += chars[randomIndex];
-            }
-
-            document.getElementById('password').value = password;
+            const chars = [
+                document.getElementById('uppercase').checked ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : '',
+                document.getElementById('lowercase').checked ? 'abcdefghijklmnopqrstuvwxyz' : '',
+                document.getElementById('numbers').checked ? '0123456789' : '',
+                document.getElementById('symbols').checked ? '!@#$%^&*()_+-=[]{}|;:,.<>?' : ''
+            ].join('');
+            
+            if (!chars) return alert('请至少选择一种字符类型！');
+            
+            document.getElementById('password').value = Array(length)
+                .fill(0)
+                .map(() => chars[Math.floor(Math.random() * chars.length)])
+                .join('');
         }
 
-        // 复制函数
-        function copyIdInfo() {
-            const name = document.getElementById('idName').value;
-            const idcard = document.getElementById('idcard').value;
-            const text = `姓名：${name}\n身份证号：${idcard}`;
+        function copyText(ids) {
+            const text = ids.map(id => {
+                const el = document.getElementById(id);
+                return el.getAttribute('placeholder').replace('：', '') + '：' + el.value;
+            }).join('\n');
             
-            // 创建临时文本区域
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            const button = document.getElementById('copyIdInfo');
-            button.textContent = '已复制';
-            setTimeout(() => {
-                button.textContent = '复制';
-            }, 1000);
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = '已复制';
+                setTimeout(() => btn.textContent = '复制', 1000);
+            });
         }
 
-        function copyUsername() {
-            const input = document.getElementById('username');
-            input.select();
-                        document.execCommand('copy');
-            
-            const button = document.getElementById('copyUsername');
-            button.textContent = '已复制';
-            setTimeout(() => {
-                button.textContent = '复制';
-            }, 1000);
-        }
-
-        function copyPassword() {
-            const input = document.getElementById('password');
-            input.select();
-            document.execCommand('copy');
-            
-            const button = document.getElementById('copy');
-            button.textContent = '已复制';
-            setTimeout(() => {
-                button.textContent = '复制';
-            }, 1000);
-        }
-
-        // 页面加载时自动生成所有内容
+        // 初始化
         generateIdcard();
         generateUsername();
         generatePassword();
