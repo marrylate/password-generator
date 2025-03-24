@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>密码生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+            font-size: 24px;
+        }
+
+        .password-box {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #password {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #d1d1d6;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        button {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            min-height: 44px;
+        }
+
+        button:active {
+            background-color: #0051a8;
+        }
+
+        .setting {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #d1d1d6;
+            border-radius: 8px;
+            margin-left: 10px;
+        }
+
+        label {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>密码生成器</h1>
+        <div class="password-box">
+            <input type="text" id="password" readonly>
+            <button id="copy">复制</button>
+        </div>
+        <div class="settings">
+            <div class="setting">
+                <label>密码长度<input type="number" id="length" min="4" max="50" value="12"></label>
+            </div>
+            <div class="setting">
+                <label><input type="checkbox" id="uppercase" checked>大写字母</label>
+            </div>
+            <div class="setting">
+                <label><input type="checkbox" id="lowercase" checked>小写字母</label>
+            </div>
+            <div class="setting">
+                <label><input type="checkbox" id="numbers" checked>数字</label>
+            </div>
+            <div class="setting">
+                <label><input type="checkbox" id="symbols" checked>特殊符号</label>
+            </div>
+        </div>
+        <button id="generate" style="width: 100%;">生成密码</button>
+    </div>
+
+    <script>
+        // 生成密码的代码保持不变...
+    </script>
+</body>
+</html>
+    <!-- HTML部分保持不变 -->
+    <script>
+        document.getElementById('generate').addEventListener('click', generatePassword);
+        document.getElementById('copy').addEventListener('click', copyPassword);
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById('length').value);
+            const hasUpper = document.getElementById('uppercase').checked;
+            const hasLower = document.getElementById('lowercase').checked;
+            const hasNumbers = document.getElementById('numbers').checked;
+            const hasSymbols = document.getElementById('symbols').checked;
+
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let chars = '';
+            if (hasUpper) chars += upper;
+            if (hasLower) chars += lower;
+            if (hasNumbers) chars += numbers;
+            if (hasSymbols) chars += symbols;
+
+            if (!chars) {
+                alert('请至少选择一种字符类型！');
+                return;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                password += chars[randomIndex];
+            }
+
+            document.getElementById('password').value = password;
+        }
+
+        function copyPassword() {
+            const passwordInput = document.getElementById('password');
+            passwordInput.select();
+            document.execCommand('copy');
+            
+            const copyButton = document.getElementById('copy');
+            copyButton.textContent = '已复制';
+            setTimeout(() => {
+                copyButton.textContent = '复制';
+            }, 1000);
+        }
+
+        // 页面加载时自动生成一个密码
+        generatePassword();
+    </script>
